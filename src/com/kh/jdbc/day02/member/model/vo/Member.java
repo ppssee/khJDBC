@@ -15,6 +15,12 @@ public class Member {
 	private String memberHobby;
 	private Date enrollDate;
 	
+	public Member(String memberId, String memberPwd) {
+		super();
+		this.memberId = memberId;
+		this.memberPwd = memberPwd;
+	}
+
 	public Member() {}
 
 	public Member(String memberId, String memberPwd, String memberName, String memberGender, int memberAge,

@@ -17,10 +17,36 @@ public class MemberView {
 		System.out.println("4. 회원 가입");
 		System.out.println("5. 회원 정보 수정 ");
 		System.out.println("6. 회원 탈퇴");
+		System.out.println("7. 회원 로그인");
 		System.out.println("0. 프로그램 종료");
 		System.out.print("메뉴 선택: ");
 		int choice = sc.nextInt();
 		return choice;
+	}
+
+	public void printMessage(String msg) {
+		System.out.println(msg);
+	}
+
+	public void displaySuccess(String message) {
+		System.out.println("[서비스 성공] : " + message);
+	}
+
+	public void displayError(String message) {
+		System.out.println("[서비스 실패] : " + message);
+	}
+
+	public void showOne(Member member) {       // 2. Id로 조회
+		System.out.println("아이디 : " + member.getMemberId());
+		System.out.println("비밀번호 : " + member.getMemberPwd());
+		System.out.println("이름 : " + member.getMemberName());
+		System.out.println("성별 : " + member.getMemberGender());
+		System.out.println("나이 : " + member.getMemberAge());
+		System.out.println("이메일 : " + member.getMemberEmail());
+		System.out.println("전화번호 : " + member.getMemberPhone());
+		System.out.println("주소 : " + member.getMemberAddress());
+		System.out.println("취미 : " + member.getMemberHobby());
+		System.out.println("가입날짜 : " + member.getEnrollDate());	
 	}
 
 	public void showAll(List<Member> members) {
@@ -42,13 +68,6 @@ public class MemberView {
 	}
 
 	
-
-	public void displaySuccess(String message) {
-		System.out.println("[서비스 성공] : " + message);
-	}
-	public void displayError(String message) {
-		System.out.println("[서비스 실패] : " + message);
-	}
 
 	public Member inputMember() {
 		Scanner sc = new Scanner(System.in);
@@ -91,19 +110,6 @@ public class MemberView {
 		return id;
 	}
 	
-	public void showOne(Member member) {       // 2. Id로 조회
-		System.out.println("아이디 : " + member.getMemberId());
-		System.out.println("비밀번호 : " + member.getMemberPwd());
-		System.out.println("이름 : " + member.getMemberName());
-		System.out.println("성별 : " + member.getMemberGender());
-		System.out.println("나이 : " + member.getMemberAge());
-		System.out.println("이메일 : " + member.getMemberEmail());
-		System.out.println("전화번호 : " + member.getMemberPhone());
-		System.out.println("주소 : " + member.getMemberAddress());
-		System.out.println("취미 : " + member.getMemberHobby());
-		System.out.println("가입날짜 : " + member.getEnrollDate());	
-	}
-
 	public String inputMemberName(String string) {
 		Scanner sc = new Scanner(System.in);
 		System.out.print(string + "할 이름 입력 : ");
@@ -139,7 +145,13 @@ public class MemberView {
 		return member;
 	}
 
-	public void printMessage(String msg) {
-		System.out.println(msg);
+	public Member loginMember() {
+		Scanner sc = new Scanner(System.in);
+		System.out.print("  아이디: ");
+		String memberId = sc.next();
+		System.out.print("비밀번호: ");
+		String memberPwd = sc.next();
+		Member member = new Member(memberId, memberPwd);
+		return member;
 	}
 }

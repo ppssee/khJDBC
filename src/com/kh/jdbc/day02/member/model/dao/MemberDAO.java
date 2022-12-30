@@ -13,6 +13,7 @@ import com.kh.jdbc.day02.member.model.vo.Member;
 
 public class MemberDAO {
 
+	
 	private final String URL = "jdbc:oracle:thin:@localhost:1521:XE";
 	private final String USER = "student";
 	private final String PASSWORD = "student";
@@ -59,42 +60,6 @@ public class MemberDAO {
 		return mList;
 	}
 	
-	public int insertMember(Member member) {
-		
-		
-		int result = 0;
-		
-		
-		try {
-			Class.forName(DRIVER_NAME);
-			Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
-			
-			String sql = "INSERT INTO MEMBER_TBL VALUES(?,?,?,?,?,?,?,?,?,SYSTIMESTAMP)";
-			PreparedStatement pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, member.getMemberId());
-			pstmt.setString(2, member.getMemberPwd());
-			pstmt.setString(3, member.getMemberName());
-			pstmt.setString(4, member.getMemberGender());
-			pstmt.setInt(5, member.getMemberAge());
-			pstmt.setString(6, member.getMemberEmail());
-			pstmt.setString(7, member.getMemberPhone());
-			pstmt.setString(8, member.getMemberAddress());
-			pstmt.setString(9, member.getMemberHobby());
-			result = pstmt.executeUpdate();
-			
-			pstmt.close();
-			conn.close();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return result;
-	}
-
 	public Member selectOneById(String memberId) {
 		
 		String sql = "SELECT * FROM MEMBER_TBL WHERE MEMBER_ID = ?";
@@ -170,6 +135,42 @@ public class MemberDAO {
 	}
 
 	
+	public int insertMember(Member member) {
+		
+		
+		int result = 0;
+		
+		
+		try {
+			Class.forName(DRIVER_NAME);
+			Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+			
+			String sql = "INSERT INTO MEMBER_TBL VALUES(?,?,?,?,?,?,?,?,?,SYSTIMESTAMP)";
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, member.getMemberId());
+			pstmt.setString(2, member.getMemberPwd());
+			pstmt.setString(3, member.getMemberName());
+			pstmt.setString(4, member.getMemberGender());
+			pstmt.setInt(5, member.getMemberAge());
+			pstmt.setString(6, member.getMemberEmail());
+			pstmt.setString(7, member.getMemberPhone());
+			pstmt.setString(8, member.getMemberAddress());
+			pstmt.setString(9, member.getMemberHobby());
+			result = pstmt.executeUpdate();
+			
+			pstmt.close();
+			conn.close();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+
 	public int updateMember(Member member) {
 		
 		String sql = "UPDATE MEMBER_TBL SET MEMBER_PWD = ?, MEMBER_EMAIL = ?, MEMBER_PHONE = ?, MEMBER_ADDRESS = ?, MEMBER_HOBBY = ? WHERE MEMBER_ID = ?";
@@ -226,4 +227,30 @@ public class MemberDAO {
 		return result;
 	}
 
+	public Member loginMember(Member member) {
+		String sql = "SELECT * FROM MEMBER_TBL WHERE MEMBER_ID = ? AND MEMBER_PWD = ?";
+		
+		try {
+			Class.forName(DRIVER_NAME);
+			Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, member.getMemberId());
+			pstmt.setString(2, member.getMemberPwd());
+			ResultSet rset = pstmt.executeQuery();
+			if(!rset.next()) {
+				member = null;
+			}
+			
+			
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return member;
+	}
+	
+	
 }

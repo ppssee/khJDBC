@@ -13,6 +13,7 @@ public class MemberRun {
 		MemberController mCon = new MemberController();
 		List<Member> mList = null;
 		Member member = null;
+		Member loginMember = null;
 		int result = 0;
 		String memberId = "";
 		String memberName = "";
@@ -86,6 +87,17 @@ public class MemberRun {
 					mView.displayError("탈퇴 실패.");
 				}
 				break;
+				
+			case 7 :
+				member = mView.loginMember();
+				loginMember = mCon.loginMember(member);
+				if(loginMember != null) {
+					mView.displaySuccess("로그인이 성공했습니다.");
+				} else {
+					mView.displayError("로그인이 실패했습니다.");
+				}
+				break;
+				
 			default : 
 				mView.printMessage("잘못입력 1~6 사이 수 입력");
 				break;

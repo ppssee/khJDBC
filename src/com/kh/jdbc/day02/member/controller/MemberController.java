@@ -53,4 +53,12 @@ public class MemberController {
 		int result = mDao.deleteMember(memberId);
 		return result;
 	}
+
+	public Member loginMember(Member member) {
+		MemberDAO mDao = new MemberDAO();
+		Member loginMember = mDao.loginMember(member);
+		return loginMember;
+	}
+
+
 }
