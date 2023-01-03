@@ -1,5 +1,8 @@
 package com.kh.jdbc.day03.member.model.dao;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -8,16 +11,35 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import com.kh.jdbc.day03.member.model.vo.Member;
 
 public class MemberDAO {
-
-	public List<Member> selectAll(Connection conn){
-		List<Member> mList = null;
-		String query = "SELECT * FROM MEMBER_TBL";
-
+	
+	private Properties prop;
+	
+	public MemberDAO(){
+		prop = new Properties();
 		try {
+			FileReader reader = new FileReader("resources/query.properties");
+			prop.load(reader);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public List<Member> selectAll(Connection conn){
+		
+		List<Member> mList = null;
+	
+		try {
+			String query = prop.getProperty("selectAll");
+			
 			Statement stmt = conn.createStatement();
 			ResultSet rset = stmt.executeQuery(query);
 			mList = new ArrayList<Member>();
@@ -35,7 +57,7 @@ public class MemberDAO {
 				member.setEnrollDate(rset.getDate("MEMBER_DATE"));
 				mList.add(member);
 			}
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -43,9 +65,10 @@ public class MemberDAO {
 	}
 	
 	public Member selectOneById(Connection conn, String memberId) {
-		String sql = "SELECT * FROM MEMBER_TBL WHERE MEMBER_ID = ?";
 		Member member = null;
 		try {
+			String sql = prop.getProperty("selectOneById");
+			
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, memberId);
 			ResultSet rset = pstmt.executeQuery();
@@ -63,7 +86,7 @@ public class MemberDAO {
 				member.setEnrollDate(rset.getDate("MEMBER_DATE"));
 			}
 			
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -72,10 +95,12 @@ public class MemberDAO {
 	}
 
 	public List<Member> selectAllByName(Connection conn, String memberName) {
-		String sql = "SELECT * FROM MEMBER_TBL WHERE MEMBER_NAME = ?";
 		Member member = null;
 		List<Member> mList = null;
 		try {
+			String sql = prop.getProperty("selectAllByName");
+			
+			
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, memberName);
 			ResultSet rset = pstmt.executeQuery();
@@ -95,7 +120,7 @@ public class MemberDAO {
 				mList.add(member);
 			}
 			
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -105,8 +130,9 @@ public class MemberDAO {
 
 	public int insertMember(Connection conn, Member member) {
 		int result = 0;
-		String sql = "INSERT INTO MEMBER_TBL VALEUS(?,?,?,?,?,?,?,?,?,DEFAULT";
 		try {
+			String sql = prop.getProperty("insertMember");
+			
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, member.getMemberId());
 			pstmt.setString(2, member.getMemberPwd());
@@ -120,7 +146,7 @@ public class MemberDAO {
 			result = pstmt.executeUpdate();
 			
 			pstmt.close();
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -129,13 +155,11 @@ public class MemberDAO {
 	
 	public int updateMember(Connection conn, Member member) {      // 회원정보 수정
 		int result = 0;
-		String sql = "UPDATE MEMBER_TBL SET MEMBER_PWD = ?"
-				+ ", MEMBER_EMAIL = ?"
-				+ ", MEMBER_PHONE = ?"
-				+ ", MEMBER_ADDRESS = ?"
-				+ ", MEMBER_HOBBY = ?"
-				+ "  WHERE MEMBER_ID = ?";
+	
 		try {
+			String sql = prop.getProperty("updateMember");
+			
+			
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, member.getMemberPwd());
 			pstmt.setString(2, member.getMemberEmail());
@@ -146,7 +170,7 @@ public class MemberDAO {
 			result = pstmt.executeUpdate();
 			
 			pstmt.close();
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -155,15 +179,16 @@ public class MemberDAO {
 
 	public int removeMember(Connection conn, String memberId) {
 		int result = 0;
-		String sql = "DELETE FROM MEMBER_TBL WHERE MEMBER_ID = ?";
 		
 		try {
+			String sql = prop.getProperty("removeMember");
+			
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, memberId);
 			result = pstmt.executeUpdate();
 			
 			pstmt.close();
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -171,9 +196,10 @@ public class MemberDAO {
 	}
 
 	public Member loginMember(Connection conn, Member member) {
-		String sql = "SELECT * FROM MEMBER_TBL WHERE MEMBER_ID = ? AND MEMBER_PWD = ?";
 		
 		try {
+			String sql = prop.getProperty("loginMember");
+			
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, member.getMemberId());
 			pstmt.setString(2, member.getMemberPwd());
@@ -182,7 +208,7 @@ public class MemberDAO {
 				member = null;
 			} 
 			
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
