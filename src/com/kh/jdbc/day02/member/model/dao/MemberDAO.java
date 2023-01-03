@@ -241,6 +241,9 @@ public class MemberDAO {
 				member = null;
 			}
 			
+			rset.close();
+			pstmt.close();
+			conn.close();
 			
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block

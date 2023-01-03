@@ -67,8 +67,6 @@ public class MemberView {
 		
 	}
 
-	
-
 	public Member inputMember() {
 		Scanner sc = new Scanner(System.in);
 		System.out.print("아이디: ");
